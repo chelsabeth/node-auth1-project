@@ -23,10 +23,11 @@ router.post("/login", (req, res) => {
   let { username, password } = req.body;
 
   Users.findBy({ username })
-    .first()
+    // .first()
     .then(user => {
+      console.log(user)
       if (user && bc.compareSync(password, user.password)) {
-        req.sessions.loggedIn = true; // used in restricted middleware
+        req.session.loggedIn = true; // used in restricted middleware
         req.session.userId = user.id; // in case we need the user id later
 
         res.status(200).json({ message: `Welcome ${user.username}!` });
@@ -59,7 +60,7 @@ router.get("/logout", (req, res) => {
     req.session.destroy(err => {
       if (err) {
         res.status(500).json({
-          thanks: "for using our app!"
+          sorry: "can't log you out!"
         });
       } else {
         res.status(200).json({ bye: "have a nice day!" });

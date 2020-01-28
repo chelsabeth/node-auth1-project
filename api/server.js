@@ -3,6 +3,7 @@ const helmet = require("helmet");
 const cors = require("cors");
 const session = require("express-session"); 
 const knexSessionStore = require("connect-session-knex")(session);
+const restricted = require('../auth/restricted-middleware.js');
 
 const db = require("../database/dbConfig.js");
 
@@ -12,7 +13,7 @@ const usersRouter = require("../users/user-router.js");
 const server = express();
 
 const sessionConfig = {
-    name: "cooookies",
+    name: "cooookie",
     // secret is used for cookie encryption
     secret: process.env.SESSION_SECRET || "shhh...keep it a secret",
     cookie: {
@@ -37,7 +38,7 @@ server.use(express.json());
 server.use(cors());
 
 server.use("/api/auth", authRouter);
-server.use("/api/users", usersRouter);
+server.use("/api/users", restricted, usersRouter);
 
 server.get("/", (req, res) => {
     res.json({ api: "it's aliiiiive!" });
