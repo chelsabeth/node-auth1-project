@@ -4,6 +4,7 @@ const Users = require("../users/user-model.js");
 
 const bc = require("bcryptjs");
 
+// for endpoints beginning with /api/auth
 router.post("/register", (req, res) => {
   let user = req.body;
 
