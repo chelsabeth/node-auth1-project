@@ -38,10 +38,13 @@ router.post("/login", (req, res) => {
 });
 
 router.get("/users", (req, res) => {
+  const username = req.headers.username // headers is similar to local storage
+  // If front end set it to not look for username in the header, this would not work 
+  console.log(username);
 
   Users.find()
     .then(user => {
-      if () {
+      if (username) {
         res.status(200).json(user);
       } else {
         res.status(401).json({ message: "You shall not pass!" });
